@@ -102,6 +102,8 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public static final int SELECTION_MODE_RANGE = 3;
 
+
+
     /**
      * {@linkplain IntDef} annotation for showOtherDates.
      *
@@ -175,10 +177,11 @@ public class MaterialCalendarView extends ViewGroup {
     private final DirectionButton buttonPast;
     private final DirectionButton buttonFuture;
     private final CalendarPager pager;
-    private CalendarPagerAdapter<?> adapter;
+    public CalendarPagerAdapter<?> adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
     private CalendarMode calendarMode;
+    private boolean isUserSelectionEnabled = true;
     /**
      * Used for the dynamic calendar height.
      */
@@ -219,6 +222,7 @@ public class MaterialCalendarView extends ViewGroup {
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
 
+    private OnDateClickListener clickListener;
     private OnDateSelectedListener listener;
     private OnMonthChangedListener monthListener;
     private OnRangeSelectedListener rangeListener;
@@ -744,6 +748,18 @@ public class MaterialCalendarView extends ViewGroup {
         title.setTextAppearance(getContext(), resourceId);
     }
 
+    public void setHeaderBackgroundColor(int colorId){
+        topbar.setBackgroundColor(colorId);
+    }
+
+    public void setHeaderBackgroundColor(Drawable drawable){
+        topbar.setBackground(drawable);
+    }
+
+    public void setHeaderTitleColor(int colorId){
+        title.setTextColor(colorId);
+    }
+
     /**
      * @param resourceId The text appearance resource id.
      */
@@ -756,6 +772,11 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setWeekDayTextAppearance(int resourceId) {
         adapter.setWeekDayTextAppearance(resourceId);
+    }
+
+    public void setWeekDayBackgroundColor(int colorId)
+    {
+        adapter.setWeekDayBackgroundColor(colorId);
     }
 
     /**
@@ -813,6 +834,28 @@ public class MaterialCalendarView extends ViewGroup {
             setDateSelected(date, true);
         }
     }
+
+    public void setCalendarsSelected(ArrayList<Calendar> dates)
+    {
+        if(dates != null)
+        {
+            for(Calendar c : dates)
+                if(c != null)
+                    setDateSelected(c,true);
+        }
+    }
+
+
+    public void setDatesSelected(ArrayList<Date> dates)
+    {
+        if(dates != null)
+        {
+            for(Date c : dates)
+                if(c != null)
+                    setDateSelected(c,true);
+        }
+    }
+
 
     /**
      * @param calendar a Calendar to change. Passing null does nothing
@@ -1337,6 +1380,10 @@ public class MaterialCalendarView extends ViewGroup {
         this.listener = listener;
     }
 
+    public void setOnDateClickListener(OnDateClickListener listener) {
+        this.clickListener= listener;
+    }
+
     /**
      * Sets the listener to be notified upon month changes.
      *
@@ -1374,6 +1421,14 @@ public class MaterialCalendarView extends ViewGroup {
         OnDateSelectedListener l = listener;
         if (l != null) {
             l.onDateSelected(MaterialCalendarView.this, day, selected);
+        }
+    }
+
+
+    protected void dispatchOnDateClicked(final CalendarDay day, final boolean selected) {
+        OnDateClickListener l = clickListener;
+        if (l != null) {
+            l.onDateClicked(MaterialCalendarView.this, day,selected);
         }
     }
 
@@ -1425,7 +1480,14 @@ public class MaterialCalendarView extends ViewGroup {
      * @param nowSelected true if the date is now selected, false otherwise
      */
     protected void onDateClicked(@NonNull CalendarDay date, boolean nowSelected) {
+
+        dispatchOnDateClicked(date,!nowSelected);
+
+        if(!isUserSelectionEnabled)
+            return;
+
         switch (selectionMode) {
+
             case SELECTION_MODE_MULTIPLE: {
                 adapter.setDateSelected(date, nowSelected);
                 dispatchOnDateSelected(date, nowSelected);
@@ -1458,6 +1520,17 @@ public class MaterialCalendarView extends ViewGroup {
             }
             break;
         }
+    }
+
+
+    public void disableUserSelection()
+    {
+        this.isUserSelectionEnabled = false;
+    }
+
+    public void enableUserSelection()
+    {
+        this.isUserSelectionEnabled = true;
     }
 
     /**

@@ -104,6 +104,13 @@ abstract class CalendarPagerView extends ViewGroup implements View.OnClickListen
         invalidateDecorators();
     }
 
+    public void setWeekDayBackgroundColor(int colorId){
+        for (WeekDayView weekDayView : weekDayViews) {
+            weekDayView.setBackgroundColor(colorId);
+        }
+    }
+
+
     public void setWeekDayTextAppearance(int taId) {
         for (WeekDayView weekDayView : weekDayViews) {
             weekDayView.setTextAppearance(getContext(), taId);

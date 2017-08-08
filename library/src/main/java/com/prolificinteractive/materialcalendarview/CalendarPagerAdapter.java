@@ -29,6 +29,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
+    private Integer weekDayBackgroundColor = null;
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
@@ -83,6 +84,7 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.color = color;
         newAdapter.dateTextAppearance = dateTextAppearance;
         newAdapter.weekDayTextAppearance = weekDayTextAppearance;
+        newAdapter.weekDayBackgroundColor = weekDayBackgroundColor;
         newAdapter.showOtherDates = showOtherDates;
         newAdapter.minDate = minDate;
         newAdapter.maxDate = maxDate;
@@ -150,6 +152,10 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         }
         if (weekDayTextAppearance != null) {
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
+        }
+
+        if (weekDayBackgroundColor != null) {
+            pagerView.setWeekDayBackgroundColor(weekDayBackgroundColor);
         }
         pagerView.setShowOtherDates(showOtherDates);
         pagerView.setMinimumDate(minDate);
@@ -228,6 +234,17 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     @ShowOtherDates
     public int getShowOtherDates() {
         return showOtherDates;
+    }
+
+    public void setWeekDayBackgroundColor(int colorId)
+    {
+        if(colorId == 0)
+            return;
+
+        this.weekDayBackgroundColor = colorId;
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayBackgroundColor(colorId);
+        }
     }
 
     public void setWeekDayTextAppearance(int taId) {
