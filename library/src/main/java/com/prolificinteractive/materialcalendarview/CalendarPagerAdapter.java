@@ -1,5 +1,6 @@
 package com.prolificinteractive.materialcalendarview;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
+import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +32,9 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
     private Integer weekDayBackgroundColor = null;
+    private Typeface weekDayTypeface = null;
+    private Boolean weekDayAllCaps  = null;
+
     @ShowOtherDates
     private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
@@ -85,6 +90,8 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         newAdapter.dateTextAppearance = dateTextAppearance;
         newAdapter.weekDayTextAppearance = weekDayTextAppearance;
         newAdapter.weekDayBackgroundColor = weekDayBackgroundColor;
+        newAdapter.weekDayTypeface = weekDayTypeface;
+        newAdapter.weekDayAllCaps = weekDayAllCaps;
         newAdapter.showOtherDates = showOtherDates;
         newAdapter.minDate = minDate;
         newAdapter.maxDate = maxDate;
@@ -153,10 +160,18 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         if (weekDayTextAppearance != null) {
             pagerView.setWeekDayTextAppearance(weekDayTextAppearance);
         }
-
         if (weekDayBackgroundColor != null) {
             pagerView.setWeekDayBackgroundColor(weekDayBackgroundColor);
         }
+
+        if(weekDayTypeface != null){
+            pagerView.setWeekDayTypeface(weekDayTypeface);
+        }
+
+        if(weekDayAllCaps != null){
+            pagerView.setWeekDayAllCaps(weekDayAllCaps);
+        }
+
         pagerView.setShowOtherDates(showOtherDates);
         pagerView.setMinimumDate(minDate);
         pagerView.setMaximumDate(maxDate);
@@ -254,6 +269,27 @@ abstract class CalendarPagerAdapter<V extends CalendarPagerView> extends PagerAd
         this.weekDayTextAppearance = taId;
         for (V pagerView : currentViews) {
             pagerView.setWeekDayTextAppearance(taId);
+        }
+    }
+
+    public void setWeekDayTypeface(Typeface typeface){
+        if(typeface == null)
+            return;
+
+        this.weekDayTypeface = typeface;
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayTypeface(typeface);
+        }
+    }
+
+    public void setWeekDayAllCaps(Boolean allCaps)
+    {
+        if(allCaps == null)
+            return;
+
+        this.weekDayAllCaps = allCaps;
+        for (V pagerView : currentViews) {
+            pagerView.setWeekDayAllCaps(allCaps);
         }
     }
 

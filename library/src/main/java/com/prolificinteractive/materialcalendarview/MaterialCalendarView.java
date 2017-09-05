@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -35,6 +36,7 @@ import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -760,6 +762,16 @@ public class MaterialCalendarView extends ViewGroup {
         title.setTextColor(colorId);
     }
 
+    public void setHeaderTitleTypeface(Typeface typeface)
+    {
+        title.setTypeface(typeface);
+    }
+
+    public void setHeaderTitleAllCaps(boolean allCaps)
+    {
+        title.setAllCaps(allCaps);
+    }
+
     /**
      * @param resourceId The text appearance resource id.
      */
@@ -772,6 +784,16 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setWeekDayTextAppearance(int resourceId) {
         adapter.setWeekDayTextAppearance(resourceId);
+    }
+
+    public void setWeekDayTypeface(Typeface typeface)
+    {
+        adapter.setWeekDayTypeface(typeface);
+    }
+
+    public void setWeekDayAllCaps(Boolean allCaps)
+    {
+        adapter.setWeekDayAllCaps(allCaps);
     }
 
     public void setWeekDayBackgroundColor(int colorId)
